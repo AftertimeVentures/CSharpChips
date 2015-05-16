@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Sky7.Exceptions {
+namespace Sky7.CSharpChips.Exceptions {
     /// <summary>
     /// ExceptionBag comes handy when one needs to make multiple checks and produce particular exceptions 
     /// for each check that fails, but make sure that all chacks are performed before the exception is actually fired.

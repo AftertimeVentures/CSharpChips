@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-using Sky7.Exceptions;
+using Sky7.CSharpChips.Exceptions;
 
 namespace Sky7.ExceptionBagDemo {
     class Program {

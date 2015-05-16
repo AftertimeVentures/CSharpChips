@@ -35,9 +35,14 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Exceptions\CompoundException.cs" />
+    <Compile Include="Exceptions\ExceptionSafe.cs" />
+    <Compile Include="Exceptions\MultiException.cs" />
     <Compile Include="Exceptions\ExceptionBag.cs" />
-    <Compile Include="Exceptions\ExceptionPipeline.cs" />
+    <Compile Include="Exceptions\ExceptionCookBook.cs" />
+    <Compile Include="Exceptions\SuppressedException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
