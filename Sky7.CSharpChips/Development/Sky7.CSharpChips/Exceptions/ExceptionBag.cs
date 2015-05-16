@@ -28,6 +28,7 @@ namespace Sky7.Exceptions {
         /// and then fire the resulting exception.
         /// </summary>
         /// <param name="wrapper">The delegate to wrap a set of exceptions into one.</param>
+        /// <exception cref="System.ArgumentNullException">Supplied wrapper argument is null.</exception>
         public ExceptionBag(Func<ExceptionBag<T>, Exception> wrapper) {
             if (wrapper == null)
                 throw new ArgumentNullException("wrapper");
@@ -37,10 +38,22 @@ namespace Sky7.Exceptions {
         }
 
         //  ExceptionBag interface method(s)
+        /// <summary>
+        /// Puts the given exception into the exception bag.
+        /// </summary>
+        /// <exception cref="System.ArgumentNullException">Supplied exception argument is null.</exception>
+        /// <param name="exception"></param>
         public void Put(T exception) {
+            if (exception == null)
+                throw new ArgumentNullException("exception");
+
             elementaryExceptions.Add(exception);
         }
 
+        /// <summary>
+        /// Checks if the exception bag is empty.
+        /// </summary>
+        /// <returns>True if the exception bag is empty, false otherwise.</returns>
         public bool IsEmpty {
             get {
                 return elementaryExceptions.Count() == 0;
@@ -48,16 +61,27 @@ namespace Sky7.Exceptions {
         }
 
         //  IDisposable method(s)
+        /// <summary>
+        /// See documentation for System.IDisposable.
+        /// </summary>
         public void Dispose() {
             if (!IsEmpty)
                 throw aggregator(this);
         }
 
         //  IEnumerable<T> methods
+        /// <summary>
+        /// See documentation for System.Collections.Generic.IEnumerable&lt;T&gt;./>
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator<T> GetEnumerator() {
             return elementaryExceptions.GetEnumerator();
         }
 
+        /// <summary>
+        /// See documentation for System.Collections.Generic.IEnumerable./>
+        /// </summary>
+        /// <returns></returns>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
             return elementaryExceptions.GetEnumerator();
         }
@@ -72,6 +96,9 @@ namespace Sky7.Exceptions {
         private readonly List<T> elementaryExceptions;
     }
 
+    /// <summary>
+    /// A shorthand for ExceptionBag&lt;Exception&gt;.
+    /// </summary>
     public class ExceptionBag : ExceptionBag<Exception> {
 
     }
