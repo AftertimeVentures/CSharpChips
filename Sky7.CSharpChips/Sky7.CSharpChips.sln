@@ -9,6 +9,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Quality", "Quality", "{47A2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sky7.CSharpChips", "Development\Sky7.CSharpChips\Sky7.CSharpChips.csproj", "{2445B986-0958-4B8A-ADD0-32F0B0A47276}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{40058BB7-CC06-4410-9CA2-E422EAC60855}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sky7.ExceptionBagDemo", "Demos\Sky7.ExceptionBagDemo\Sky7.ExceptionBagDemo.csproj", "{A63E1889-FC9D-410A-B151-C2BF188EA118}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,11 +23,16 @@ Global
 		{2445B986-0958-4B8A-ADD0-32F0B0A47276}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2445B986-0958-4B8A-ADD0-32F0B0A47276}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2445B986-0958-4B8A-ADD0-32F0B0A47276}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A63E1889-FC9D-410A-B151-C2BF188EA118}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A63E1889-FC9D-410A-B151-C2BF188EA118}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A63E1889-FC9D-410A-B151-C2BF188EA118}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A63E1889-FC9D-410A-B151-C2BF188EA118}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2445B986-0958-4B8A-ADD0-32F0B0A47276} = {3B45103F-3921-4AE7-B191-0CA3EAEA7568}
+		{A63E1889-FC9D-410A-B151-C2BF188EA118} = {40058BB7-CC06-4410-9CA2-E422EAC60855}
 	EndGlobalSection
 EndGlobal
