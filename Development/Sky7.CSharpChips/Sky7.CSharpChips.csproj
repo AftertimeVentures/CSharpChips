@@ -11,6 +11,10 @@
     <AssemblyName>Sky7.CSharpChips</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,6 +39,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Exceptions\ExceptionSafe.cs" />
     <Compile Include="Exceptions\MultiException.cs" />
     <Compile Include="Exceptions\ExceptionBag.cs" />
