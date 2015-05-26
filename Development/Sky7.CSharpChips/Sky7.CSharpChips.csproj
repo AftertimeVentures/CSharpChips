@@ -45,6 +45,7 @@
     <Compile Include="Exceptions\ExceptionBag.cs" />
     <Compile Include="Exceptions\ExceptionCookBook.cs" />
     <Compile Include="Exceptions\SuppressedException.cs" />
+    <Compile Include="Reflection\AnnotatedMembersHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
