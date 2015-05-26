@@ -6,9 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Sky7.CSharpChips.Reflection {
-    public class AnnotatedMember<T, TA> where T : class {
+    public struct AnnotatedMember<T, TA> where T : class {
         public TA Annotation { get; set; }
         public T Info { get; set; }
+    }
+
+    public struct AnnotatedType<TA> {
+        public Type Type { get; set; }
+        public TA Annotation { get; set; }
     }
 
     public static class AnnotatedMembersHelpers {
@@ -43,6 +48,17 @@ namespace Sky7.CSharpChips.Reflection {
                     }
                 )
                 .Where(am => am.Annotation != null);
+        }
+
+        public static IEnumerable<AnnotatedType<TA>> GetAnnotatedTypes<TA>(this Assembly assembly) where TA : Attribute {
+            return assembly.GetTypes()
+                .Select(
+                    t => new AnnotatedType<TA>() {
+                        Type = t,
+                        Annotation = t.GetCustomAttribute<TA>()
+                    }
+                )
+                .Where(at => at.Annotation != null);
         }
     }
 }
