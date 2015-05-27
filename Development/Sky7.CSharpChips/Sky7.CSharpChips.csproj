@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Collections\CollectionExtensions.cs" />
     <Compile Include="Exceptions\ExceptionSafe.cs" />
+    <Compile Include="Exceptions\ICompoundException.cs" />
     <Compile Include="Exceptions\MultiException.cs" />
     <Compile Include="Exceptions\ExceptionBag.cs" />
     <Compile Include="Exceptions\ExceptionCookBook.cs" />

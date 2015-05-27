@@ -12,7 +12,7 @@ namespace Sky7.CSharpChips.Exceptions {
     /// being for example a piece of javascript running in the user's browser.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class ExceptionBag<T> : Exception, IDisposable, IEnumerable<T> where T : Exception {
+    public class ExceptionBag<T> : Exception, IDisposable, ICompoundException<T> where T : Exception {
 
         // Constructor(s)
         /// <summary>

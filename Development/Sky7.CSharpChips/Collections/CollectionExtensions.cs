@@ -28,5 +28,16 @@ namespace Sky7.CSharpChips.Collections {
 
             return item;
         }
+
+        public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> items) {
+            IList<T> list = collection as IList<T>;
+
+            if (list != null) {
+                list.AddRange(items);
+            }  else {
+                foreach (T item in items)
+                    collection.Add(item);
+            }
+        }
     }
 }

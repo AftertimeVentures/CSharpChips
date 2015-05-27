@@ -14,6 +14,20 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sky7.ExceptionBagDemo", "Demos\Sky7.ExceptionBagDemo\Sky7.ExceptionBagDemo.csproj", "{A63E1889-FC9D-410A-B151-C2BF188EA118}"
 EndProject
 Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://sky7group.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Demos\\Sky7.ExceptionBagDemo\\Sky7.ExceptionBagDemo.csproj
+		SccProjectTopLevelParentUniqueName1 = Sky7.CSharpChips.sln
+		SccProjectName1 = Demos/Sky7.ExceptionBagDemo
+		SccLocalPath1 = Demos\\Sky7.ExceptionBagDemo
+		SccProjectUniqueName2 = Development\\Sky7.CSharpChips\\Sky7.CSharpChips.csproj
+		SccProjectTopLevelParentUniqueName2 = Sky7.CSharpChips.sln
+		SccProjectName2 = Development/Sky7.CSharpChips
+		SccLocalPath2 = Development\\Sky7.CSharpChips
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

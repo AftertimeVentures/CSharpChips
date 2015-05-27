@@ -18,7 +18,7 @@ namespace Sky7.CSharpChips.Exceptions {
     /// via the read-only ResultingException property. Accessing ResultingException property causes
     /// the cookbok to execute the list of recipes and find the suitable one. The resulting exception can 
     /// also be thrown by applying the ThrowUnlessSuppressed extension method to the cookbook. Doing so 
-    /// will fire an the resulting exception unless it the esception was suppresed bythe cookbook.
+    /// will fire an the resulting exception unless it the exception was suppresed bythe cookbook.
     /// </summary>
     public sealed class ExceptionCookBook {
         //  Constructor
@@ -30,27 +30,42 @@ namespace Sky7.CSharpChips.Exceptions {
             originalException = exception;
         }
 
-        /// <summary>
-        /// Adds a recipe that transforms the exception by applying the given transform.
-        /// </summary>
-        /// <param name="recipe">The transform to apply to the exception.</param>
-        public void AddRecipe(Func<Exception, Exception> recipe) {
-            recipes.Add(recipe);
+        public Exception TranslatedExeption { get { return translatedException; } }
+
+        public void AddTransform(Func<Exception, bool> sieve, Func<Exception, Exception> transform) {
+            recipes.Add(
+                e => {
+                    bool result = false;
+
+                    if (result = sieve(originalException))
+                        translatedException = transform(originalException);
+
+                    return result;
+                }
+            );
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public Exception ResultingException {
-            get {
-                Exception transformedException = TryTransform();
-
-                if (transformedException == null)
-                    transformedException = originalException;
-
-                return transformedException;
-            }
+        public void AddHandler(Func<Exception, bool> sieve, Action<Exception> handler) {
+            throw new NotImplementedException();
         }
+
+        public void AddSupression(Func<Exception, bool> sieve) {
+            throw new NotImplementedException();
+        }
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public Object Result {
+        //    get {
+        //        Exception transformedException = TryTransform();
+
+        //        if (transformedException == null)
+        //            transformedException = originalException;
+
+        //        return transformedException;
+        //    }
+        //}
 
         public Exception TransformDefault(Exception transformedException) {
             Exception ex = TryTransform();
@@ -84,20 +99,38 @@ namespace Sky7.CSharpChips.Exceptions {
         private Exception TryTransform() {
             Exception transformedException = null;
 
-            foreach (Func<Exception, Exception> transform in recipes) {
-                if ((transformedException = transform(originalException)) != null)
+            foreach (Func<Exception, bool> recipe in recipes) {
+                if (recipe(originalException))
                     break;
             }
 
-            return transformedException;
+            return translatedException;
+        }
+
+        private void Execute() {
+            foreach (Func<Exception, bool> recipe in recipes) {
+
+            }
         }
 
         //  Private fields
         private readonly Exception originalException;
-        private readonly List<Func<Exception, Exception>> recipes = new List<Func<Exception, Exception>>();
+        private Exception translatedException;
+        private readonly Object result;
+        private readonly List<Func<Exception, bool>> recipes = new List<Func<Exception, bool>>();
     }
 
     public static class ExceptionCookBookExtensions {
+        /// <summary>
+        /// Creates a new cookbook to cook the given exception.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="ex">The esception to cook.</param>
+        /// <param name="recipe"></param>
+        /// <returns></returns>
+        public static ExceptionCookBook Transform(this Exception ex, Func<Exception, Exception> recipe) {
+            return Transform<Exception>(new ExceptionCookBook(ex), recipe);
+        }
         /// <summary>
         /// Creates a new cookbook to cook the given exception.
         /// </summary>
@@ -125,10 +158,10 @@ namespace Sky7.CSharpChips.Exceptions {
         /// </summary>
         /// <typeparam name="T">The type of exceptions to aplly the new recipe to.</typeparam>
         /// <param name="cookBook">The cookbook to add the new recipe to.</param>
-        /// <param name="recipe">The delegate to transform the exception.</param>
+        /// <param name="transform">The delegate to transform the exception.</param>
         /// <returns>The cookbook to support fluent API.</returns>
-        public static ExceptionCookBook Transform<T>(this ExceptionCookBook cookBook, Func<T, Exception> recipe) where T : Exception {
-            cookBook.AddRecipe((e) => e is T ? recipe(e as T) : null);
+        public static ExceptionCookBook Transform<T>(this ExceptionCookBook cookBook, Func<T, Exception> transform) where T : Exception {
+            cookBook.AddTransform(e => e is T, e => transform(e as T));
 
             return cookBook;
         }
@@ -138,10 +171,10 @@ namespace Sky7.CSharpChips.Exceptions {
         /// <typeparam name="T">The type of exceptions to aplly the new recipe to.</typeparam>
         /// <param name="cookBook">The cookbook to add the new recipe to.</param>
         /// <param name="sieve">The sieve to filter exceptions to which the recipe is applicable.</param>
-        /// <param name="recipe">The delegate to transform the exception.</param>
+        /// <param name="tramsform">The delegate to transform the exception.</param>
         /// <returns>The cookbook to support fluent API.</returns>
-        public static ExceptionCookBook Transform<T>(this ExceptionCookBook cookBook, Func<T, bool> sieve, Func<T, Exception> recipe) where T : Exception {
-            cookBook.AddRecipe((e) => e is T && sieve(e as T) ? recipe(e as T) : null);
+        public static ExceptionCookBook Transform<T>(this ExceptionCookBook cookBook, Func<T, bool> sieve, Func<T, Exception> tramsform) where T : Exception {
+            cookBook.AddTransform(e => e is T && sieve(e as T), e => tramsform(e as T));
 
             return cookBook;
         }
@@ -152,7 +185,7 @@ namespace Sky7.CSharpChips.Exceptions {
         /// <param name="cookBook">The cookbook to add the new recipe to.</param>
         /// <returns></returns>
         public static ExceptionCookBook Preserve<T>(this ExceptionCookBook cookBook) where T : Exception {
-            cookBook.AddRecipe(e => e is T ? e : null);
+            cookBook.AddTransform(e => e is T, e => e);
 
             return cookBook;
         }
@@ -164,7 +197,7 @@ namespace Sky7.CSharpChips.Exceptions {
         /// <param name="sieve">The sieve to filter exceptions that are affected by the new recipe.</param>
         /// <returns></returns>
         public static ExceptionCookBook Preserve<T>(this ExceptionCookBook cookBook, Func<T, bool> sieve) where T : Exception {
-            cookBook.AddRecipe(e => e is T && sieve(e as T) ? e : null);
+            cookBook.AddTransform(e => e is T && sieve(e as T), e => e);
 
             return cookBook;
         }
@@ -175,18 +208,41 @@ namespace Sky7.CSharpChips.Exceptions {
         /// <param name="cookBook">The cookbok to add the new recipe to.</param>
         /// <returns></returns>
         public static ExceptionCookBook Suppress<T>(this ExceptionCookBook cookBook) where T : Exception {
-            cookBook.AddRecipe(e => e is T ? new SuppressedException() : null);
+            cookBook.AddSupression(e => e is T);
+
+            return cookBook;
+        }
+        /// <summary>
+        /// Adds a recipe to suppress exceptions of type T that passes the given sieve.
+        /// </summary>
+        /// <typeparam name="T">The type of exception to be suppressed by the new recipe.</typeparam>
+        /// <param name="cookBook">The cookbok to add the new recipe to.</param>
+        /// <param name="sieve">The sieve to filter exceptions.</param>
+        /// <returns></returns>
+        public static ExceptionCookBook Suppress<T>(this ExceptionCookBook cookBook, Func<T, bool> sieve) where T : Exception {
+            cookBook.AddSupression(e => e is T && sieve(e as T));
 
             return cookBook;
         }
 
+        public static ExceptionCookBook Handle<T>(this ExceptionCookBook cookBook, Action<T> handler) where T : Exception {
+            cookBook.AddHandler(e => e is T, e => handler(e as T));
+
+            return cookBook;
+        }
+
+        public static ExceptionCookBook Handle<T>(this ExceptionCookBook cookBook, Func<T, bool> sieve, Action<T> handler) where T : Exception {
+            cookBook.AddHandler(e => e is T && sieve(e as T), e => handler(e as T));
+
+            return cookBook;
+        }
         /// <summary>
         /// Throws the ResultingException of the cookbook, unless it is a suppressed exception.
         /// </summary>
         /// <param name="cookBook">The ExceptionCookBook to throw exception from.</param>
         public static void ThrowUnlessSuppressed(this ExceptionCookBook cookBook) {
-            if (!(cookBook.ResultingException is SuppressedException))
-                throw cookBook.ResultingException;
+            if (!(cookBook.TranslatedExeption is SuppressedException))
+                throw cookBook.TranslatedExeption;
         }
 
         /// <summary>
